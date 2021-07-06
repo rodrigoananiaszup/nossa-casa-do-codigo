@@ -8,9 +8,9 @@ import javax.validation.constraints.Email
 
 @Entity
 class Autor(
-    val nome: String?,
-    val email: String?,
-    val descricao: String?
+    val nome: String,
+    val email: String,
+    val descricao: String
 ) {
     @Id
     @GeneratedValue
