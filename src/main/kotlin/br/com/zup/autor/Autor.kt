@@ -10,7 +10,7 @@ import javax.validation.constraints.Email
 class Autor(
     val nome: String,
     val email: String,
-    val descricao: String
+    var descricao: String
 ) {
     @Id
     @GeneratedValue
