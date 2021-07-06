@@ -1,0 +1,18 @@
+micronaut:
+  application:
+    name: nossaCasaDoCodigo
+
+
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/cdc
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: postgres
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
