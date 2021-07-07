@@ -9,13 +9,19 @@ import javax.validation.Valid
 
 @Validated
 @Controller("/autores")
-class AutorController(val autorRepository: AutorRepository) {
+class AutorController(
+    val autorRepository: AutorRepository,
+    val enderecoClient: EnderecoClient
+) {
 
     @Post
+    @Transactional
     fun cadastra(@Body @Valid request: NovoAutorRequest): HttpResponse<Any> {
         println("Requisição => ${request}")
 
-        val autor = request.paraAutor()
+        val enderecoResponse = enderecoClient.consulta(request.cep)
+
+        val autor = request.paraAutor(enderecoResponse.body()!!)
         autorRepository.save(autor)
 
         val uri = UriBuilder.of("/autores/{id}")
@@ -36,7 +42,7 @@ class AutorController(val autorRepository: AutorRepository) {
             return HttpResponse.ok(response)
         }
 
-        val possivelAutor = autorRepository.findByEmail(email)
+        val possivelAutor = autorRepository.buscaPorEmail(email)
 
         if (possivelAutor.isEmpty) {
             return HttpResponse.notFound()
@@ -48,6 +54,7 @@ class AutorController(val autorRepository: AutorRepository) {
     }
 
     @Put("/{id}")
+    @Transactional
     fun atualiza(@PathVariable id: Long, descricao: String): HttpResponse<Any> {
         val possivelAutor = autorRepository.findById(id)
 
@@ -65,6 +72,7 @@ class AutorController(val autorRepository: AutorRepository) {
     }
 
     @Delete("/{id}")
+    @Transactional
     fun remove(@PathVariable id: Long): HttpResponse<Any> {
         val possivelAutor = autorRepository.findById(id)
 

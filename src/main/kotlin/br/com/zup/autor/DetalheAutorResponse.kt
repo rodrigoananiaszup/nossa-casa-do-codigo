@@ -6,4 +6,5 @@ class DetalheAutorResponse(autor: Autor) {
     val email = autor.email
     val descricao = autor.descricao
 
+
 }
